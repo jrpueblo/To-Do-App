@@ -24,13 +24,12 @@ export default async function NotesPage() {
 
   return(
     <div>
-      <h1>Notes</h1>
+      <h1>To-DOs</h1>
       <div className={styles.grid}>
         {notes?.map((note) => {
           return <Note key={note.id} note={note} />;
         })}
       </div>
-
       <CreateNote />
     </div>
   );

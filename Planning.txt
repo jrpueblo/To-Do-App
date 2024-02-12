@@ -1,0 +1,16 @@
+
+To-DO-App
+
+Technologies
+-NextJS
+-PocketBase (SQL lite, noSQL)
+-Tailwind CSS
+
+To-Dos
+1. Configure creation of new to-dos in form 
+    - Stored properly in backend
+    - Fetched and shown after creation (refresh page after creating)
+    - Fields (checkbox (for completion), task, deadline, empty space for link)
+2. Create Archive section where completed tasks go
+    - When checkbox is clicked, move to archive (hidden atribute checked?)
+    
