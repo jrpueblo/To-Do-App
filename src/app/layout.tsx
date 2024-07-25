@@ -13,14 +13,18 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <main>
-          <nav>
-            <Link href="/">
-              Home
-            </Link>
-            <Link href="/notes">
-              To-DO
-            </Link>
-          </nav>
+        <nav className="navbar">
+          <div className="container">
+              <div className="nav-links">
+                <Link href="/" className="nav-link">
+                  To-Do List
+                </Link>
+                {/* <Link href="/notes" className="nav-link">
+                  Daillies
+                </Link> */}
+              </div>
+            </div>
+        </nav>
           {children}
         </main>
       </body>

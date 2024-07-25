@@ -2,14 +2,7 @@
 import Link from 'next/link';
 import styles from './Notes.module.css';
 import CreateNote from './CreateNote';
-
-// export const dynamic = 'auto',
-//   dynamicParams = true,
-//   revalidate = 0,
-//   fetchCache = 'auto',
-//   runtime = 'nodejs',
-//   preferredRegion = 'auto'
-
+import DeleteIcon from './deleteButton';
 
 async function getNotes() {
   // const db = new PocketBase('http://127.0.0.1:8090');
@@ -24,7 +17,6 @@ export default async function NotesPage() {
 
   return(
     <div>
-      <h1>To-DOs</h1>
       <div className={styles.grid}>
         {notes?.map((note) => {
           return <Note key={note.id} note={note} />;
