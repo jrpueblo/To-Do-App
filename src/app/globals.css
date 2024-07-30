@@ -1,7 +1,3 @@
-/* @tailwind base;
-@tailwind components;
-@tailwind utilities; */
-
 * {
   box-sizing: border-box;
 }
@@ -68,7 +64,6 @@ nav a {
   border-radius: 5px; 
   width: 80%; 
   max-width: 600px; 
-  width: 100%;
   margin: 5rem auto; 
   text-align: center; 
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
@@ -88,7 +83,6 @@ nav a {
   border-radius: 5px; 
   width: 80%; 
   max-width: 600px; 
-  width: 100%;
   margin: 5rem auto; 
   text-align: center; 
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
@@ -179,7 +173,8 @@ nav a {
   border: 1px solid #ccc; 
   border-radius: 8px; 
   padding: 1rem; 
-  margin-bottom: 1rem; 
+  max-width: 60%;
+  margin: 1rem auto; 
 }
 
 .note-container h2 {
@@ -213,4 +208,105 @@ nav a {
 
 .note-icons > * {
   padding: 5px 0;
+}
+
+/* Styles for delete popup */
+
+.backdrop {
+  position: fixed; 
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); 
+  backdrop-filter: blur(5px); 
+  z-index: 999; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.backdrop.hidden{
+  display: none;
+}
+
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popup-container {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.popup-container p {
+  margin-bottom: 1rem;
+}
+
+.popup-container button {
+  margin: 0 0.5rem;
+  padding: 0.5rem 1rem;
+  border: none;
+  cursor: pointer;
+}
+
+/* style for edit popup */
+
+.edit-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #1A1A40;
+  padding: 2rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  
+}
+
+.edit-popup h3 {
+  margin-top: 0;
+  color: white
+}
+
+.edit-popup input,
+.edit-popup textarea {
+  display: block;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.edit-popup button {
+  background: #8758ff;
+  color: #fff;
+  border: none;
+  padding: 0.55rem;
+  cursor: pointer;
+}
+
+.edit-popup button:hover {
+  background: #5a2d9c; 
+}
+
+.edit-buttons{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
 }

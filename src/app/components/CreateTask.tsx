@@ -3,8 +3,6 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-
-
 export default function CreateTask() {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
@@ -53,7 +51,7 @@ export default function CreateTask() {
             className="todo-input"
         />
         <button type="submit" className="todo-btn">
-            Create note
+            Create Task
         </button>
         </form>
     </div>
