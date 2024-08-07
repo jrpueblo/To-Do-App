@@ -18,10 +18,10 @@ export default function RootLayout({
               <div className="nav-links">
                 <Link href="/" className="nav-link">
                   To-Do List
-                </Link>
-                {/* <Link href="/notes" className="nav-link">
+                </Link >
+                <Link href="/dallies" className="nav-link">
                   Daillies
-                </Link> */}
+                </Link>
               </div>
             </div>
         </nav>

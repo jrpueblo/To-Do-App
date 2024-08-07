@@ -17,7 +17,8 @@ interface TaskProps {
 }
 
 const Task: React.FC<TaskProps> = ({ id, title, content, created }) => {
-  const [isPopupVisible, setPopupVisible] = useState(false);
+  const [isDeletePopupVisible, setDeletePopupVisible] = useState(false);
+  const [isCompletePopupVisible, setCompletePopupVisible] = useState(false);
   const [currentTaskId, setCurrentTaskId] = useState<string | null>(null);
   const [isEditPopupVisible, setEditPopupVisible] = useState(false);
   const [editTitle, setEditTitle] = useState(title);
@@ -28,8 +29,8 @@ const Task: React.FC<TaskProps> = ({ id, title, content, created }) => {
   const handleDelete = async (id: string) => {
 
     try {
-      console.log(id);
-      setPopupVisible(false);
+      //console.log(id);
+      setDeletePopupVisible(false);
 
       const response = await fetch(`http://127.0.0.1:8090/api/collections/Tasks/records/${id}`, {
         method: 'DELETE',
@@ -46,7 +47,7 @@ const Task: React.FC<TaskProps> = ({ id, title, content, created }) => {
       window.location.reload();
       
     } catch (error) {
-      console.error('Error deleting note:', error);
+      console.error('Error deleting task:', error);
       return "";
     }
   };
@@ -76,30 +77,55 @@ const Task: React.FC<TaskProps> = ({ id, title, content, created }) => {
       window.location.reload();
      
     } catch (error) {
-      console.error('Error editing note:', error);
+      console.error('Error editing task:', error);
       return "";
     }
   };
 
   const handleComplete = async (id: string) => {
     try {
+      setCompletePopupVisible(false);
       console.log(id);
+
+      const response = await fetch(`http://127.0.0.1:8090/api/collections/Tasks/records/${id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          completed: true,
+        }),
+      });
+
+      if(!response.ok){
+        throw new Error(`Failed to set task to complete: ${response.status} ${response.statusText}`);
+      } else{
+        console.log(`Task with id ${id} completed successfully`);
+      }
+
+      setCompletePopupVisible(false);
+      window.location.reload();
       
     } catch (error) {
-      console.error('Error completing note:', error);
+      console.error('Error completing task:', error);
       return "";
     }
   };
 
-  const showPopup = (id: string) => {
+  const showDeletePopup = (id: string) => {
     setCurrentTaskId(id);
-    setPopupVisible(true);
+    setDeletePopupVisible(true);
   };
 
   const showEditPopup = (id: string) => {
     setCurrentTaskId(id);
     setEditPopupVisible(true);
   };
+
+  const showCompletePopup = (id: string) => {
+    setCurrentTaskId(id);
+    setCompletePopupVisible(true);
+  }
 
   const confirmDelete = () => {
     if (currentTaskId) {
@@ -108,7 +134,7 @@ const Task: React.FC<TaskProps> = ({ id, title, content, created }) => {
   };
 
   const cancelDelete = () => {
-    setPopupVisible(false);
+    setDeletePopupVisible(false);
   };
 
   const confirmEdit = () => {
@@ -121,6 +147,16 @@ const Task: React.FC<TaskProps> = ({ id, title, content, created }) => {
     setEditPopupVisible(false);
   }
 
+  const confirmComplete = () => {
+    if(currentTaskId) {
+      handleComplete(currentTaskId);
+    }
+  }
+
+  const cancelComplete = () => {
+    setCompletePopupVisible(false);
+  }
+
   return (
     <div className="note-container">
       <div className="note-content">
@@ -129,18 +165,18 @@ const Task: React.FC<TaskProps> = ({ id, title, content, created }) => {
         <p>{new Date(created).toLocaleString()}</p>
       </div>
       <div className="note-icons">
-        <button onClick={() => showPopup(id)} className="icon-button">
+        <button onClick={() => showDeletePopup(id)} className="icon-button">
           <DeleteIcon />
         </button>
         <button onClick={() => showEditPopup(id)} className="icon-button">
           <EditIcon />
         </button>
-        <button onClick={() => handleComplete(id)} className="icon-button">
+        <button onClick={() => showCompletePopup(id)} className="icon-button">
           <CompleteIcon />
         </button>
       </div>
 
-      {isPopupVisible && (
+      {isDeletePopupVisible && (
       <>  
         <div className="backdrop">
           <ConfirmPopup
@@ -176,6 +212,20 @@ const Task: React.FC<TaskProps> = ({ id, title, content, created }) => {
           </div>
         </>
       )}
+
+      {isCompletePopupVisible && (
+      <>  
+        <div className="backdrop">
+          <ConfirmPopup
+            message="Are you sure you want to mark this task as complete?"
+            onConfirm={confirmComplete}
+            onCancel={cancelComplete}
+          />
+        </div>
+      </>
+      )}
+
+   
     </div>
     
   );
