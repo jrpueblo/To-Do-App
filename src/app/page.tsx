@@ -50,7 +50,18 @@ async function getCompletedTasks(): Promise<Task[]> {
     }
 
     const data = await res.json();
-    return data?.items || [];
+    const allTasks = data?.items || [];
+    const completedTasks = [];
+    
+    for(let i = 0; i < allTasks.length; i++){
+      const status = allTasks[i].completed;
+      if (status == true){
+        completedTasks.push(allTasks[i]);
+      }
+    }
+
+    
+    return completedTasks;
   } catch (error){
     console.error('Error fetching completed tasks:', error);
     return [];
