@@ -11,8 +11,37 @@ interface Task {
   created: string;
 }
 
-async function getNotes(): Promise<Task[]> {
+async function getTasks(): Promise<Task[]> {
   try {
+    const res = await fetch('http://127.0.0.1:8090/api/collections/Tasks/records', { cache: 'no-store' });
+
+    if (!res.ok) {
+      console.error(`Error fetching notes: ${res.status} ${res.statusText}`);
+      return [];
+    }
+    
+    const data = await res.json();
+    const allTasks = data?.items || [];
+    const activetasks = [];
+    
+    for(let i = 0; i < allTasks.length; i++){
+      const status = allTasks[i].completed;
+      if (status == false){
+        activetasks.push(allTasks[i]);
+      }
+    }
+
+    
+    return activetasks;
+
+  } catch (error) {
+    console.error('Error fetching notes:', error);
+    return [];
+  }
+}
+
+async function getCompletedTasks(): Promise<Task[]> {
+  try{
     const res = await fetch('http://127.0.0.1:8090/api/collections/Tasks/records', { cache: 'no-store' });
 
     if (!res.ok) {
@@ -22,28 +51,35 @@ async function getNotes(): Promise<Task[]> {
 
     const data = await res.json();
     return data?.items || [];
-  } catch (error) {
-    console.error('Error fetching notes:', error);
+  } catch (error){
+    console.error('Error fetching completed tasks:', error);
     return [];
   }
 }
 
 const HomePage: React.FC = () => {
-  const [notes, setNotes] = React.useState<Task[]>([]);
+  const [tasks, setTasks] = React.useState<Task[]>([]);
+  const [completedTasks, setCompletedTasks] = React.useState<Task[]>([]);
 
   React.useEffect(() => {
-    const fetchNotes = async () => {
-      const fetchedNotes = await getNotes();
-      setNotes(fetchedNotes);
+    const fetchTasks = async () => {
+      const fetchedTasks = await getTasks();
+      setTasks(fetchedTasks);
     };
 
-    fetchNotes();
+    const fetchCompleted = async () => {
+      const fetchedCoompletedTasks = await getCompletedTasks();
+      setCompletedTasks(fetchedCoompletedTasks);
+    }
+
+    fetchTasks();
+    fetchCompleted();
   }, []);
 
   return (
     <div className="App">
       <CreateTask />
-      <TaskList tasks={notes} />
+      <TaskList tasks={tasks} />
     </div>
   );
 };
