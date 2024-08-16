@@ -24,6 +24,7 @@ async function getTasks(): Promise<Task[]> {
     const allTasks = data?.items || [];
     const activetasks = [];
     
+    // filter out completed tasks
     for(let i = 0; i < allTasks.length; i++){
       const status = allTasks[i].completed;
       if (status == false){
@@ -53,6 +54,7 @@ async function getCompletedTasks(): Promise<Task[]> {
     const allTasks = data?.items || [];
     const completedTasks = [];
     
+    // filter out active tasks
     for(let i = 0; i < allTasks.length; i++){
       const status = allTasks[i].completed;
       if (status == true){
@@ -67,6 +69,36 @@ async function getCompletedTasks(): Promise<Task[]> {
     return [];
   }
 }
+
+async function clearCompletedTasks() {
+  try{
+    // fetch completed tasks
+    const completedTasks = await getCompletedTasks();
+
+    // Loop through and delete each task
+    for (const task of completedTasks) {
+      const response = await fetch(`http://127.0.0.1:8090/api/collections/Tasks/records/${task.id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if(!response.ok){
+        console.error(`Failed to delete task with id ${task.id}: ${response.status} ${response.statusText}`);
+      }else{
+        console.log(`Task with id $task.id} has been deleted successfully`)
+      }
+    }
+
+    // refresh
+    window.location.reload();
+  }catch (error){
+    console.error('Error clearing completed tasks', error); 
+  }
+}
+
+
 
 const HomePage: React.FC = () => {
   const [tasks, setTasks] = React.useState<Task[]>([]);
@@ -91,6 +123,11 @@ const HomePage: React.FC = () => {
     <div className="App">
       <CreateTask />
       <TaskList tasks={tasks} />
+      <h1 className="completedTitle">Completed tasks below</h1>
+      <TaskList tasks={completedTasks} />
+      <button onClick={clearCompletedTasks} className='clearCompletedTaskButton'>
+        Click here to clear Completed Tasks
+      </button>
     </div>
   );
 };
