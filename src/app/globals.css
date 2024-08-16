@@ -316,14 +316,15 @@ nav a {
   gap: 0.5rem;
 }
 
-.clearCompletedTaskButton{
-
+.clearTaskButton{
+  margin-top: 50px;
   background: #1A1A40;
   color: #fff;
   border: none;
   padding: 0.55rem;
   cursor: pointer;
-  width: 300px;
+  width: 150px;
   height: 50px;
   font-family: inherit;
+  font-size: 17px;
 }
