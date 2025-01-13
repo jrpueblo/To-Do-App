@@ -126,8 +126,6 @@ async function clearCompletedTasks() {
   }
 }
 
-
-
 const HomePage: React.FC = () => {
   const [tasks, setTasks] = React.useState<Task[]>([]);
   const [completedTasks, setCompletedTasks] = React.useState<Task[]>([]);
